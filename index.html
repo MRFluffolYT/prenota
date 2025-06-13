@@ -4,17 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Prenota la tua chiamata</title>
-  <!-- Plyr CSS -->
   <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
       background-color: #f5f5f7;
       color: #1d1d1f;
       padding: 80px 20px;
@@ -26,8 +21,6 @@
       font-weight: 600;
       color: #000;
       margin-bottom: 60px;
-      letter-spacing: -0.03rem;
-      line-height: 1.1;
     }
 
     .plyr__video-embed {
@@ -43,8 +36,6 @@
       font-size: 1.2rem;
       font-weight: 600;
       color: #0071e3;
-      text-align: center;
-      user-select: none;
     }
 
     #lockedContent {
@@ -58,30 +49,12 @@
       opacity: 0;
       transform: scale(0.95) translateY(40px);
       transition: opacity 0.6s ease, transform 0.6s ease;
-      will-change: transform, opacity;
     }
 
     #lockedContent.show {
       display: block;
       opacity: 1;
       transform: scale(1) translateY(0);
-    }
-
-    #lockedContent h2 {
-      font-size: 2rem;
-      font-weight: 600;
-      margin-bottom: 20px;
-      color: #000;
-    }
-
-    #lockedContent p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: #555;
-      margin-bottom: 40px;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
     }
 
     a.button {
@@ -92,9 +65,9 @@
       font-weight: 600;
       text-decoration: none;
       border-radius: 100px;
-      transition: background-color 0.3s ease, transform 0.3s ease;
       display: inline-block;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+      transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
     a.button:hover {
@@ -103,19 +76,9 @@
     }
 
     @media (max-width: 600px) {
-      h1 {
-        font-size: 2.2rem;
-        margin-bottom: 40px;
-      }
-
-      #lockedContent {
-        padding: 30px 20px;
-      }
-
-      a.button {
-        width: 100%;
-        padding: 16px 0;
-      }
+      h1 { font-size: 2.2rem; margin-bottom: 40px; }
+      #lockedContent { padding: 30px 20px; }
+      a.button { width: 100%; padding: 16px 0; }
     }
   </style>
 </head>
@@ -125,6 +88,7 @@
 
   <div class="plyr__video-embed" id="player">
     <iframe
+      id="vimeo-video"
       src="https://player.vimeo.com/video/1093093469?h=4c8cc5d7a0&title=0&byline=0&portrait=0"
       allowfullscreen
       allow="autoplay; picture-in-picture"
@@ -132,7 +96,7 @@
     </iframe>
   </div>
 
-  <div id="countdown">Tempo rimanente...</div>
+  <div id="countdown">Tempo rimanente: ...</div>
 
   <div id="lockedContent">
     <h2>Prenota ora</h2>
@@ -140,40 +104,47 @@
     <a href="https://calendly.com/advisualagency/15m" class="button" target="_blank">Prenota la tua chiamata</a>
   </div>
 
-  <!-- Plyr JS -->
+  <!-- Script -->
   <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+  <script src="https://player.vimeo.com/api/player.js"></script>
   <script>
-    const player = new Plyr('#player', {
+    const plyrPlayer = new Plyr('#player', {
       fullscreen: { enabled: false },
       controls: ['play', 'progress', 'current-time', 'mute', 'volume'],
     });
 
-    const countdownElement = document.getElementById("countdown");
-    const lockedContent = document.getElementById("lockedContent");
-    let countdownInterval;
+    const iframe = document.querySelector('#vimeo-video');
+    const vimeoPlayer = new Vimeo.Player(iframe);
 
-    // Formatta in mm:ss
+    const countdownElement = document.getElementById('countdown');
+    const lockedContent = document.getElementById('lockedContent');
+
     function formatTime(seconds) {
       const m = Math.floor(seconds / 60).toString().padStart(2, '0');
       const s = Math.floor(seconds % 60).toString().padStart(2, '0');
       return `${m}:${s}`;
     }
 
-    player.on('ready', () => {
-      const videoDuration = player.duration;
+    let duration = 0;
+    let countdownInterval;
+
+    vimeoPlayer.getDuration().then(d => {
+      duration = d;
 
       countdownInterval = setInterval(() => {
-        const remaining = videoDuration - player.currentTime;
-        if (remaining > 0) {
-          countdownElement.textContent = `Tempo rimanente: ${formatTime(remaining)}`;
-        } else {
-          countdownElement.textContent = '';
-          clearInterval(countdownInterval);
-        }
+        vimeoPlayer.getCurrentTime().then(currentTime => {
+          const remaining = duration - currentTime;
+          if (remaining > 0) {
+            countdownElement.textContent = `Tempo rimanente: ${formatTime(remaining)}`;
+          } else {
+            countdownElement.textContent = '';
+            clearInterval(countdownInterval);
+          }
+        });
       }, 1000);
     });
 
-    player.on('ended', () => {
+    vimeoPlayer.on('ended', () => {
       lockedContent.classList.add('show');
       countdownElement.textContent = '';
       clearInterval(countdownInterval);
