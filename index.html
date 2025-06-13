@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Prenota la tua chiamata</title>
+  <!-- Plyr CSS -->
   <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
   <style>
     * {
@@ -24,15 +25,9 @@
       font-size: 2.8rem;
       font-weight: 600;
       color: #000;
-      margin-bottom: 30px;
+      margin-bottom: 60px;
       letter-spacing: -0.03rem;
       line-height: 1.1;
-    }
-
-    #countdown {
-      font-size: 1.2rem;
-      color: #666;
-      margin-bottom: 30px;
     }
 
     .plyr__video-embed {
@@ -41,6 +36,15 @@
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    #countdown {
+      margin-top: 16px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #0071e3;
+      text-align: center;
+      user-select: none;
     }
 
     #lockedContent {
@@ -101,7 +105,7 @@
     @media (max-width: 600px) {
       h1 {
         font-size: 2.2rem;
-        margin-bottom: 20px;
+        margin-bottom: 40px;
       }
 
       #lockedContent {
@@ -118,7 +122,6 @@
 <body>
 
   <h1>Guarda il video<br>per sbloccare la tua chiamata gratuita</h1>
-  <div id="countdown">Tempo rimanente: ...</div>
 
   <div class="plyr__video-embed" id="player">
     <iframe
@@ -129,12 +132,15 @@
     </iframe>
   </div>
 
+  <div id="countdown">Tempo rimanente: 02:32</div>
+
   <div id="lockedContent">
     <h2>Prenota ora</h2>
     <p>Hai completato il video. Clicca sul pulsante qui sotto per prenotare una chiamata gratuita.</p>
     <a href="https://calendly.com/advisualagency/15m" class="button" target="_blank">Prenota la tua chiamata</a>
   </div>
 
+  <!-- Plyr JS -->
   <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
   <script>
     const player = new Plyr('#player', {
@@ -145,27 +151,34 @@
     const countdownElement = document.getElementById("countdown");
     const lockedContent = document.getElementById("lockedContent");
 
-    let countdownInterval;
+    // Durata video in secondi (modifica con durata reale)
+    const videoDuration = 152;
 
+    // Funzione per formattare il tempo in mm:ss
     function formatTime(seconds) {
-      const mins = Math.floor(seconds / 60);
-      const secs = Math.floor(seconds % 60);
-      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+      const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+      const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
     }
+
+    let countdownInterval;
 
     player.on('ready', () => {
       countdownInterval = setInterval(() => {
-        const remaining = player.duration - player.currentTime;
-        if (!isNaN(remaining) && remaining > 0) {
+        const remaining = videoDuration - player.currentTime;
+        if (remaining > 0) {
           countdownElement.textContent = `Tempo rimanente: ${formatTime(remaining)}`;
+        } else {
+          countdownElement.textContent = '';
+          clearInterval(countdownInterval);
         }
       }, 1000);
-    });
 
-    player.on('ended', () => {
-      clearInterval(countdownInterval);
-      countdownElement.style.display = "none";
-      lockedContent.classList.add('show');
+      player.on('ended', () => {
+        lockedContent.classList.add('show');
+        countdownElement.textContent = '';
+        clearInterval(countdownInterval);
+      });
     });
   </script>
 </body>
