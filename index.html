@@ -29,6 +29,15 @@
       letter-spacing: -0.03rem;
     }
 
+    .highlighted {
+      display: inline-block;
+      padding: 0.2em 0.5em;
+      border: 2px solid #0071e3;
+      border-radius: 999px;
+      background-color: rgba(0, 113, 227, 0.05);
+      font-weight: 600;
+    }
+
     .plyr__video-embed {
       max-width: 880px;
       margin: 0 auto;
@@ -111,7 +120,7 @@
 </head>
 <body>
 
-  <h1>Guarda il video<br>per sbloccare la tua chiamata gratuita</h1>
+  <h1>Guarda il video<br>per <span class="highlighted">sbloccare</span> la tua chiamata gratuita</h1>
 
   <div class="plyr__video-embed" id="player">
     <iframe
