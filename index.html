@@ -27,6 +27,7 @@
       color: #000;
       margin-bottom: 60px;
       letter-spacing: -0.03rem;
+      line-height: 1.1;
     }
 
     .plyr__video-embed {
@@ -35,24 +36,6 @@
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-      position: relative;
-    }
-
-    /* Stili fullscreen per centrare e adattare il video */
-    .plyr--fullscreen .plyr__video-embed,
-    .plyr--fullscreen iframe {
-      width: 100vw !important;
-      height: 100vh !important;
-      max-width: 100vw !important;
-      max-height: 100vh !important;
-      border-radius: 0 !important;
-      margin: 0 !important;
-      position: fixed !important;
-      top: 50% !important;
-      left: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      box-shadow: none !important;
-      z-index: 999999 !important;
     }
 
     #lockedContent {
@@ -111,11 +94,6 @@
     }
 
     @media (max-width: 600px) {
-      h1 {
-        font-size: 1.9rem;
-        margin-bottom: 40px;
-      }
-
       #lockedContent {
         padding: 30px 20px;
       }
@@ -135,7 +113,7 @@
     <iframe
       src="https://player.vimeo.com/video/1093093469?h=4c8cc5d7a0&title=0&byline=0&portrait=0"
       allowfullscreen
-      allow="autoplay; fullscreen; picture-in-picture"
+      allow="autoplay; picture-in-picture"
       allowtransparency="true">
     </iframe>
   </div>
@@ -150,8 +128,8 @@
   <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
   <script>
     const player = new Plyr('#player', {
-      fullscreen: { enabled: true },  // Abilita il pulsante fullscreen
-      controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'], // Pulsante fullscreen incluso
+      fullscreen: { enabled: false },  // Disabilito fullscreen
+      controls: ['play', 'progress', 'current-time', 'mute', 'volume'], // Senza fullscreen
     });
 
     const lockedContent = document.getElementById("lockedContent");
