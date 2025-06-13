@@ -22,7 +22,7 @@
     }
 
     h1 {
-      font-size: 4rem;
+      font-size: 2.8rem;
       font-weight: 600;
       color: #000;
       margin-bottom: 60px;
@@ -132,8 +132,8 @@
   <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
   <script>
     const player = new Plyr('#player', {
-      fullscreen: { enabled: false },
-      controls: ['play', 'progress', 'current-time', 'mute', 'volume'],
+      fullscreen: { enabled: true },  // Abilita il pulsante fullscreen
+      controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'], // Pulsante fullscreen incluso
     });
 
     const lockedContent = document.getElementById("lockedContent");
