@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contenuto sbloccabile</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      background-color: #f9f9f9;
+    }
+
+    video {
+      width: 100%;
+      max-width: 640px;
+      height: auto;
+      margin-top: 20px;
+    }
+
+    #lockedContent {
+      display: none;
+      margin-top: 30px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    a.button {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #007BFF;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+
+    a.button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Guarda il video per sbloccare il contenuto</h1>
+
+  <video id="myVideo" controls controlsList="nodownload">
+    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+    Il tuo browser non supporta il video.
+  </video>
+
+  <div id="lockedContent">
+    <h2>Contenuto sbloccato!</h2>
+    <p>Grazie per aver guardato il video. Ecco il tuo contenuto:</p>
+    <a href="https://example.com/tuofile.zip" class="button" target="_blank">Scarica il file</a>
+  </div>
+
+  <script>
+    const video = document.getElementById("myVideo");
+    const content = document.getElementById("lockedContent");
+    let lastTime = 0;
+
+    video.addEventListener("timeupdate", () => {
+      // Blocca il seek avanti
+      if (video.currentTime > lastTime + 2) {
+        video.currentTime = lastTime;
+      } else {
+        lastTime = video.currentTime;
+      }
+    });
+
+    video.addEventListener("ended", () => {
+      content.style.display = "block";
+    });
+  </script>
+
+</body>
+</html>
