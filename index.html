@@ -1,62 +1,106 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contenuto sbloccabile</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prenota la tua chiamata</title>
   <style>
-    body {
-      font-family: sans-serif;
+    /* Reset di base */
+    * {
+      box-sizing: border-box;
       margin: 0;
-      padding: 20px;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom, #f0f4f8, #ffffff);
+      color: #333;
+      padding: 40px 20px;
       text-align: center;
-      background-color: #f9f9f9;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      color: #1d3557;
     }
 
     video {
       width: 100%;
-      max-width: 640px;
-      height: auto;
-      margin-top: 20px;
+      max-width: 700px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     #lockedContent {
       display: none;
-      margin-top: 30px;
-      background: #fff;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-top: 40px;
+      background-color: #ffffff;
+      padding: 25px 20px;
+      border-radius: 12px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    #lockedContent h2 {
+      font-size: 1.6rem;
+      color: #2a9d8f;
+      margin-bottom: 10px;
+    }
+
+    #lockedContent p {
+      font-size: 1rem;
+      margin-bottom: 20px;
     }
 
     a.button {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 20px;
-      background: #007BFF;
+      background-color: #2a9d8f;
       color: white;
-      border-radius: 5px;
+      padding: 14px 26px;
+      font-size: 1rem;
+      font-weight: bold;
       text-decoration: none;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+      display: inline-block;
     }
 
     a.button:hover {
-      background: #0056b3;
+      background-color: #21867a;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      #lockedContent {
+        padding: 20px 15px;
+      }
+
+      a.button {
+        width: 100%;
+        padding: 14px 0;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>Guarda il video per sbloccare la tua chiamata</h1>
+  <h1>Guarda il video per sbloccare la tua chiamata gratuita</h1>
 
   <video id="myVideo" controls controlsList="nodownload">
-    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
     Il tuo browser non supporta il video.
   </video>
 
   <div id="lockedContent">
-    <h2>Prenota ora!!</h2>
-    <p>Grazie per aver guardato il video.:</p>
-    <a href="https://calendly.com/advisualagency/15m" class="button" target="_blank">Prenota</a>
+    <h2>Prenota ora!</h2>
+    <p>Grazie per aver guardato il video fino alla fine. Clicca sul pulsante qui sotto per prenotare la tua chiamata gratuita.</p>
+    <a href="https://calendly.com/advisualagency/15m" class="button" target="_blank">Prenota la tua chiamata</a>
   </div>
 
   <script>
