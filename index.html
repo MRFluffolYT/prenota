@@ -4,112 +4,137 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Prenota la tua chiamata</title>
+  <!-- Plyr CSS -->
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
   <style>
-    /* Reset di base */
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to bottom, #f0f4f8, #ffffff);
-      color: #333;
-      padding: 40px 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background-color: #f5f5f7;
+      color: #1d1d1f;
+      padding: 80px 20px;
       text-align: center;
     }
 
     h1 {
-      font-size: 1.8rem;
-      margin-bottom: 25px;
-      color: #1d3557;
+      font-size: 2.8rem;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 60px;
+      letter-spacing: -0.03rem;
     }
 
-    video {
-      width: 100%;
-      max-width: 700px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    .plyr__video-wrapper {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      max-width: 880px;
+      margin: 0 auto;
     }
 
     #lockedContent {
       display: none;
-      margin-top: 40px;
-      background-color: #ffffff;
-      padding: 25px 20px;
-      border-radius: 12px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      margin: 80px auto 0;
+      background-color: #fff;
+      padding: 50px 40px;
+      border-radius: 24px;
+      max-width: 620px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.6s ease;
+    }
+
+    #lockedContent.show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
     }
 
     #lockedContent h2 {
-      font-size: 1.6rem;
-      color: #2a9d8f;
-      margin-bottom: 10px;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #000;
     }
 
     #lockedContent p {
-      font-size: 1rem;
-      margin-bottom: 20px;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #555;
+      margin-bottom: 40px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     a.button {
-      background-color: #2a9d8f;
+      background-color: #0071e3;
       color: white;
-      padding: 14px 26px;
-      font-size: 1rem;
-      font-weight: bold;
+      padding: 16px 36px;
+      font-size: 1.1rem;
+      font-weight: 600;
       text-decoration: none;
-      border-radius: 8px;
-      transition: background 0.3s ease;
+      border-radius: 100px;
+      transition: background-color 0.3s ease;
       display: inline-block;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
     }
 
     a.button:hover {
-      background-color: #21867a;
+      background-color: #005bb5;
     }
 
     @media (max-width: 600px) {
       h1 {
-        font-size: 1.5rem;
+        font-size: 1.9rem;
+        margin-bottom: 40px;
       }
 
       #lockedContent {
-        padding: 20px 15px;
+        padding: 30px 20px;
       }
 
       a.button {
         width: 100%;
-        padding: 14px 0;
+        padding: 16px 0;
       }
     }
   </style>
 </head>
 <body>
 
-  <h1>Guarda il video per sbloccare la tua chiamata gratuita</h1>
+  <h1>Guarda il video<br>per sbloccare la tua chiamata gratuita</h1>
 
-  <video id="myVideo" controls controlsList="nodownload">
+  <video id="myVideo" playsinline webkit-playsinline controls controlsList="nodownload">
     <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
     Il tuo browser non supporta il video.
   </video>
 
   <div id="lockedContent">
-    <h2>Prenota ora!</h2>
-    <p>Grazie per aver guardato il video fino alla fine. Clicca sul pulsante qui sotto per prenotare la tua chiamata gratuita.</p>
+    <h2>Prenota ora</h2>
+    <p>Hai completato il video. Clicca sul pulsante qui sotto per prenotare una chiamata gratuita con il nostro team.</p>
     <a href="https://calendly.com/advisualagency/15m" class="button" target="_blank">Prenota la tua chiamata</a>
   </div>
 
+  <!-- Plyr JS -->
+  <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
   <script>
-    const video = document.getElementById("myVideo");
+    const player = new Plyr('#myVideo', {
+      fullscreen: { enabled: false },
+      controls: ['play', 'progress', 'current-time', 'mute', 'volume']
+    });
+
+    const video = document.querySelector('#myVideo');
     const content = document.getElementById("lockedContent");
     let lastTime = 0;
 
     video.addEventListener("timeupdate", () => {
-      // Blocca il seek avanti
       if (video.currentTime > lastTime + 2) {
         video.currentTime = lastTime;
       } else {
@@ -118,9 +143,8 @@
     });
 
     video.addEventListener("ended", () => {
-      content.style.display = "block";
+      content.classList.add("show");
     });
   </script>
-
 </body>
 </html>
