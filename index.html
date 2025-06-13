@@ -38,6 +38,11 @@
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
     }
 
+    iframe {
+      width: 100%;
+      aspect-ratio: 16/9;
+    }
+
     #lockedContent {
       display: none;
       margin: 40px auto 0;
@@ -116,10 +121,11 @@
 
   <div class="plyr__video-embed" id="player">
     <iframe
-      src="https://player.vimeo.com/video/1093093469?h=4c8cc5d7a0&title=0&byline=0&portrait=0"
+      src="https://player.vimeo.com/video/1093093469?h=4c8cc5d7a0&title=0&byline=0&portrait=0&quality=1080p"
       allowfullscreen
       allow="autoplay; picture-in-picture"
-      allowtransparency="true">
+      allowtransparency="true"
+      loading="lazy">
     </iframe>
   </div>
 
