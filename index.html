@@ -29,12 +29,12 @@
       letter-spacing: -0.03rem;
     }
 
-    .plyr__video-wrapper {
+    .plyr__video-embed {
+      max-width: 880px;
+      margin: 0 auto;
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-      max-width: 880px;
-      margin: 0 auto;
     }
 
     #lockedContent {
@@ -113,10 +113,14 @@
 
   <h1>Guarda il video<br>per sbloccare la tua chiamata gratuita</h1>
 
-  <video id="myVideo" playsinline webkit-playsinline controls controlsList="nodownload">
-    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
-    Il tuo browser non supporta il video.
-  </video>
+  <div class="plyr__video-embed" id="player">
+    <iframe
+      src="https://player.vimeo.com/video/1093093469?h=4c8cc5d7a0&title=0&byline=0&portrait=0"
+      allowfullscreen
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowtransparency="true">
+    </iframe>
+  </div>
 
   <div id="lockedContent">
     <h2>Prenota ora</h2>
@@ -127,25 +131,17 @@
   <!-- Plyr JS -->
   <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
   <script>
-    const player = new Plyr('#myVideo', {
+    const player = new Plyr('#player', {
       fullscreen: { enabled: false },
-      controls: ['play', 'progress', 'current-time', 'mute', 'volume']
+      controls: ['play', 'progress', 'current-time', 'mute', 'volume'],
     });
 
-    const video = document.querySelector('#myVideo');
-    const content = document.getElementById("lockedContent");
-    let lastTime = 0;
+    const lockedContent = document.getElementById("lockedContent");
 
-    video.addEventListener("timeupdate", () => {
-      if (video.currentTime > lastTime + 2) {
-        video.currentTime = lastTime;
-      } else {
-        lastTime = video.currentTime;
-      }
-    });
-
-    video.addEventListener("ended", () => {
-      content.classList.add("show");
+    player.on('ready', () => {
+      player.on('ended', () => {
+        lockedContent.classList.add('show');
+      });
     });
   </script>
 </body>
